@@ -17,26 +17,16 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('User was disconnected');
-    });
-
-    // socket.on('createEmail', (newEmail) => {
-    //     console.log('CreateEmail', newEmail);
-    // })
-
-    // socket.emit('newEmail', {
-    //     from: 'email@email.com',
-    //     text: 'Test email',
-    //     createdAt: 12312
-    // });
+    });    
 
     socket.on('createMessage', (message) => {
-        console.log('CreateMessage', message);
-    });
-
-    socket.emit('newMessage', {
-        from: 'User1',
-        text: 'From server',
-        createdAt: 3123
+        console.log('createMessage', message);
+        //Broadcasting the message
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
     });
 });
 
