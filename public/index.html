@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <p>Welcome to the chat app</p>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //Initialize the request to open up a websocket
+        var socket = io(); //By default it connect to localhost
+
+        //If the server shutdown will keep trying to reconnect
+        socket.on('connect', () => {
+            console.log('Connected');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+    </script>
 </body>
+
 </html>
