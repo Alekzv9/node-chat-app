@@ -11,12 +11,32 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-//WS are persistence technoloigie, client and server persist the communication
+//WS are persistence technologies, client and server persist the communication
 io.on('connection', (socket) => {
     console.log('New user connected');
 
     socket.on('disconnect', () => {
-        console.log('Client was disconnected');
+        console.log('User was disconnected');
+    });
+
+    // socket.on('createEmail', (newEmail) => {
+    //     console.log('CreateEmail', newEmail);
+    // })
+
+    // socket.emit('newEmail', {
+    //     from: 'email@email.com',
+    //     text: 'Test email',
+    //     createdAt: 12312
+    // });
+
+    socket.on('createMessage', (message) => {
+        console.log('CreateMessage', message);
+    });
+
+    socket.emit('newMessage', {
+        from: 'User1',
+        text: 'From server',
+        createdAt: 3123
     });
 });
 
