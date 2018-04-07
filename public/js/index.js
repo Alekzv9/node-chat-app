@@ -6,14 +6,33 @@ var socket = io(); //By default it connect to localhost
 
 //If the server shutdown will keep trying to reconnect
 socket.on('connect', function () {
-    console.log('Connected');    
+    console.log('Connected');
 });
 
+socket.on('newMessage', function (message) {
+    //console.log(message);
+    let li = $('<li></li>');
+    li.text(`${message.from}: ${message.text}`);
+    $('#messages').append(li);
+});
 
-socket.on('newMessage', function(message) {
-    console.log(message);
+socket.emit('createMessage', {
+    from: 'User',
+    text: 'User message'
+}, function (message) {
+    console.log('Got it.', message);
 });
 
 socket.on('disconnect', function () {
     console.log('Disconnected from server');
+});
+
+$('#message-form').on('submit', function (e) {
+    e.preventDefault();
+    socket.emit('createMessage', {
+        from: 'User',
+        text: $('#message').val()
+    }, function () {
+
+    });
 });
