@@ -23,7 +23,24 @@ function scrollToBottom() {
 
 //If the server shutdown will keep trying to reconnect
 socket.on('connect', function () {
-    console.log('Connected');
+    const params = $.deparam(window.location.search);
+    socket.emit('join', params, function (err) {
+        if (err) {
+            alert(err);
+            window.location.href = '/';
+        } else {
+            console.log('No error');
+        }
+    });
+});
+
+socket.on('updateUserList', function (users) {
+    const ol = $('<ol></ol>');
+    users.forEach(function (u) {
+        ol.append($('<li></li>').text(u));
+    });
+
+    $('#users').append(ol)
 });
 
 socket.on('newMessage', function (message) {
@@ -41,12 +58,12 @@ socket.on('newMessage', function (message) {
     // $('#messages').append(li);
 });
 
-socket.emit('createMessage', {
-    from: 'User',
-    text: 'User message'
-}, function (message) {
-    console.log('Got it.', message);
-});
+// socket.emit('createMessage', {
+//     from: 'User',
+//     text: 'User message'
+// }, function (message) {
+//     console.log('Got it.', message);
+// });
 
 socket.on('disconnect', function () {
     console.log('Disconnected from server');
