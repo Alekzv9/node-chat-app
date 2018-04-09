@@ -1,6 +1,23 @@
 //Initialize the request to open up a websocket
 var socket = io(); //By default it connect to localhost
 
+function scrollToBottom() {
+    //Selectors
+    const messages = $('#messages');
+    const newMessage = messages.children('li:last-child');
+    //Heights
+    let clientHeight = messages.prop('clientHeight');
+    let scrollTop = messages.prop('scrollTop');
+    let scrollHeight = messages.prop('scrollHeight');
+    let newMessageHeight = newMessage.innerHeight();
+    let lastMessageHeight = newMessage.prev().innerHeight();
+
+    if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        console.log('Should scroll');
+        messages.scrollTop(scrollHeight);
+    }
+}
+
 //Change arrow function for regular functions to work in
 //in a wide range of browsers
 
@@ -18,6 +35,7 @@ socket.on('newMessage', function (message) {
         createdAt: formattedTime
     });
     $('#messages').append(html);
+    scrollToBottom();
     // let li = $('<li></li>');
     // li.text(`${message.from} ${formattedTime}: ${message.text}`);
     // $('#messages').append(li);
@@ -43,6 +61,7 @@ socket.on('newLocationMessage', function (message) {
         createdAt: formattedTime
     });
     $('#messages').append(html);
+    scrollToBottom();
     // let li = $('<li></li>');
     // var a = $('<a target="_blank">My current location</a>');
     // li.text(`${message.from} ${formattedTime}: `);

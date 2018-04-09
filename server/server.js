@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
 
     //callback: acknowledgment
     socket.on('createMessage', (message, callback) => {
-        console.log('createMessage', message);
+        // console.log('createMessage', message);
         //Send to everybody (even me)
         io.emit('newMessage', generateMessage(message.from, message.text));
         callback('This is from the server');
